@@ -39,7 +39,7 @@ menu_text = ", ".join(
 )
 
 # ------------------ PDF LOADING ------------------
-loader = PyPDFLoader("..\\data\\cafe_knowledge.pdf")
+loader = PyPDFLoader("data\\cafe_knowledge.pdf")
 docs = loader.load()
 
 splitter = RecursiveCharacterTextSplitter(
