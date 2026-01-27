@@ -2,6 +2,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import os
+from dotenv import load_dotenv
+
 from langchain_community.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.embeddings import HuggingFaceEmbeddings
@@ -9,6 +11,9 @@ from langchain_community.vectorstores import FAISS
 from langchain_groq import ChatGroq
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
+
+# ------------------ LOAD ENV ------------------
+load_dotenv()
 
 # ------------------ APP ------------------
 app = FastAPI()
@@ -51,11 +56,7 @@ vectorstore = FAISS.from_documents(chunks, embeddings)
 
 # ------------------ LLM ------------------
 llm = ChatGroq(
-    
-    api_key = os.getenv("GROQ_API_KEY")
-
-
-
+    groq_api_key=os.getenv("GROQ_API_KEY"),
     model="llama3-70b-8192"
 )
 
