@@ -1,0 +1,62 @@
+[
+  {
+    "question": "What are your opening hours?",
+    "answer": "We are open from 9 AM to 10 PM every day."
+  },
+  {
+    "question": "Do you have vegan options?",
+    "answer": "Yes, we offer vegan sandwiches, salads, and smoothies."
+  },
+  {
+    "question": "How can I make a reservation?",
+    "answer": "You can book a table through our website or by calling us at +123456789."
+  },
+  {
+    "question": "Do you provide home delivery?",
+    "answer": "Yes, we provide home delivery via our app and partner platforms."
+  },
+  {
+    "question": "Do you have free Wi-Fi?",
+    "answer": "Yes, we provide free high-speed Wi-Fi for all customers."
+  },
+  {
+    "question": "What are your best-selling items?",
+    "answer": "Our best-selling items include club sandwiches, chicken burger, and cappuccino."
+  },
+  {
+    "question": "Do you have any loyalty program?",
+    "answer": "Yes, customers can join our loyalty program to earn points and get discounts."
+  },
+  {
+    "question": "Are pets allowed in the cafe?",
+    "answer": "Yes, we have a pet-friendly section in the cafe."
+  },
+  {
+    "question": "Do you accept credit/debit cards?",
+    "answer": "Yes, we accept all major credit and debit cards."
+  },
+  {
+    "question": "Is parking available?",
+    "answer": "Yes, we provide free parking for our customers."
+  },
+  {
+    "question": "Can I order custom cakes?",
+    "answer": "Yes, we accept custom cake orders for birthdays and events. Please place your order 48 hours in advance."
+  },
+  {
+    "question": "Do you have gluten-free options?",
+    "answer": "Yes, we offer gluten-free pastries and sandwiches."
+  },
+  {
+    "question": "How can I contact customer support?",
+    "answer": "You can contact customer support via email at support@servicegpt.com or call +123456789."
+  },
+  {
+    "question": "Do you offer catering services?",
+    "answer": "Yes, we provide catering for corporate events and parties. Please contact us to discuss details."
+  },
+  {
+    "question": "Do you have outdoor seating?",
+    "answer": "Yes, our cafe has a beautiful outdoor seating area."
+  }
+]
