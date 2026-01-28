@@ -38,8 +38,11 @@ menu_text = ", ".join(
     [f"{i['name']} ({i['category']} – {i['notes']})" for i in MENU_ITEMS]
 )
 
-# ------------------ PDF LOADING ------------------
-loader = PyPDFLoader("data\\cafe_knowledge.pdf")
+# ------------------ PDF LOADING (FIXED) ------------------
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+PDF_PATH = os.path.join(BASE_DIR, "data", "cafe_knowledge.pdf")
+
+loader = PyPDFLoader(PDF_PATH)
 docs = loader.load()
 
 splitter = RecursiveCharacterTextSplitter(
@@ -63,10 +66,11 @@ llm = ChatGroq(
 # ------------------ CUSTOM PROMPT ------------------
 pitstop_prompt = PromptTemplate(
     input_variables=["context", "question"],
-    template="""
+    template=f"""
 You are the "Pit Stop Assistant" for a car-themed cafe called "The Pit Stop Café".
-owner : Rizwan
-managers : Farhan , Abu bakar
+Owner: Rizwan
+Managers: Farhan, Abu Bakar
+
 Your personality:
 - Friendly
 - Energetic
@@ -74,13 +78,13 @@ Your personality:
 - Uses car metaphors like: Full Throttle, Turbo Charge, Pit Stop Relaxation
 
 Cafe Menu:
-""" + menu_text + """
+{menu_text}
 
 Cafe Knowledge (from documents):
-{context}
+{{context}}
 
 User message:
-{question}
+{{question}}
 
 Instructions:
 - If the user talks about mood, tiredness, stress, or feelings:
