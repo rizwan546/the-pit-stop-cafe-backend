@@ -38,11 +38,9 @@ menu_text = ", ".join(
     [f"{i['name']} ({i['category']} – {i['notes']})" for i in MENU_ITEMS]
 )
 
-# ------------------ PDF LOADING (FIXED) ------------------
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-PDF_PATH = os.path.join(BASE_DIR, "data", "cafe_knowledge.pdf")
-
-loader = PyPDFLoader(PDF_PATH)
+# ------------------ PDF LOADING ------------------
+pdf_path = os.path.join(os.path.dirname(__file__), "data", "cafe_knowledge.pdf")
+loader = PyPDFLoader(pdf_path)
 docs = loader.load()
 
 splitter = RecursiveCharacterTextSplitter(
@@ -68,9 +66,7 @@ pitstop_prompt = PromptTemplate(
     input_variables=["context", "question"],
     template=f"""
 You are the "Pit Stop Assistant" for a car-themed cafe called "The Pit Stop Café".
-Owner: Rizwan
-Managers: Farhan, Abu Bakar
-
+owner : Rizwan
 Your personality:
 - Friendly
 - Energetic
@@ -108,3 +104,9 @@ class Query(BaseModel):
 def ask(q: Query):
     answer = qa.run(q.question)
     return {"answer": answer}
+
+# ------------------ RUN SERVER ------------------
+if __name__ == "__main__":
+    import uvicorn
+    port = int(os.getenv("PORT", 10000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
