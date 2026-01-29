@@ -1,4 +1,17 @@
-.env
+# Ignore virtual environment
 venv/
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+
+# Ignore environment variables file
+.env
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node or frontend build
+node_modules/
+dist/
