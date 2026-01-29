@@ -1,7 +1,9 @@
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
-import os
 from dotenv import load_dotenv
 
 from langchain_community.document_loaders import PyPDFLoader
@@ -25,6 +27,20 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# ------------------ PATHS ------------------
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+FRONTEND_DIR = os.path.join(BASE_DIR, "frontend_dist")  # <-- Vite build folder
+DATA_DIR = os.path.join(BASE_DIR, "data")
+
+# ------------------ SERVE FRONTEND ------------------
+# Serve all assets (JS/CSS/images) - include hashed names
+app.mount("/assets", StaticFiles(directory=os.path.join(FRONTEND_DIR, "assets")), name="assets")
+
+# Serve index.html for all SPA routes
+@app.get("/{full_path:path}")
+def serve_frontend(full_path: str):
+    return FileResponse(os.path.join(FRONTEND_DIR, "index.html"))
+
 # ------------------ MENU ------------------
 MENU_ITEMS = [
     {"name": "Turbo Latte", "category": "Drink", "notes": "Strong & energetic"},
@@ -39,7 +55,7 @@ menu_text = ", ".join(
 )
 
 # ------------------ PDF LOADING ------------------
-pdf_path = os.path.join(os.path.dirname(__file__), "data", "cafe_knowledge.pdf")
+pdf_path = os.path.join(DATA_DIR, "cafe_knowledge.pdf")
 loader = PyPDFLoader(pdf_path)
 docs = loader.load()
 
@@ -58,7 +74,7 @@ vectorstore = FAISS.from_documents(chunks, embeddings)
 # ------------------ LLM ------------------
 llm = ChatGroq(
     groq_api_key=os.getenv("GROQ_API_KEY"),
-    model="llama3-70b-8192"
+    model="llama-3.3-70b-versatile"
 )
 
 # ------------------ CUSTOM PROMPT ------------------
@@ -66,7 +82,8 @@ pitstop_prompt = PromptTemplate(
     input_variables=["context", "question"],
     template=f"""
 You are the "Pit Stop Assistant" for a car-themed cafe called "The Pit Stop Café".
-owner : Rizwan
+Owner: Rizwan
+
 Your personality:
 - Friendly
 - Energetic
@@ -76,7 +93,7 @@ Your personality:
 Cafe Menu:
 {menu_text}
 
-Cafe Knowledge (from documents):
+Cafe Knowledge:
 {{context}}
 
 User message:
@@ -84,7 +101,7 @@ User message:
 
 Instructions:
 - If the user talks about mood, tiredness, stress, or feelings:
-  Recommend 1 drink + 1 bakery item from the menu
+  Recommend 1 drink + 1 bakery item
 - Use car metaphors naturally
 - Keep the answer short, fun, and helpful
 """
@@ -108,5 +125,5 @@ def ask(q: Query):
 # ------------------ RUN SERVER ------------------
 if __name__ == "__main__":
     import uvicorn
-    port = int(os.getenv("PORT", 10000))
+    port = int(os.getenv("PORT", 8000))
     uvicorn.run(app, host="0.0.0.0", port=port)
